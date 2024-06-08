@@ -1,0 +1,32 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Pages
+        uses: actions/setup-pages@v2
+
+      - name: Deploy
+        run: |
+          mkdir -p out
+          cp -r * out
+          mv out /github/workspace/out
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+deploy:
+  environment:
+    name: github-pages
+    url: ${{ steps.deploy.outputs.page_url }}
